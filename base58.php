@@ -143,7 +143,8 @@ class base58 {
     }
     return $res;
   }
-
+  
+  /*
    * Encode a hexadecimal (Base16) input to Base58
    *
    * @param    string  $input  A hexadecimal (Base16) input to convert to Base58
