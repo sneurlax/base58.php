@@ -123,6 +123,27 @@ class base58 {
     return $res;
   }
 
+  /**
+   *
+   * Convert a UInt64 (unsigned 64 bit integer) to a UInt8BE array
+   *
+   * @param    number   $num   A UInt64 number to convert to a UInt8BE array
+   * @param    integer  $size  Size of array to return
+   * @return   array
+   *
+   */
+  public function uint64_to_8_be($num, $size) {
+    // TODO input validation
+    //      throw exception if size < 1 or size > 8
+
+    $res = array_fill(0, $size, 0);
+    for ($i = $size - 1; $i >= 0; $i--) {
+      $res[$i] = $num % pow(2, 8);
+      $num = floor($num / pow(2, 8));
+    }
+    return $res;
+  }
+
    * Encode a hexadecimal (Base16) input to Base58
    *
    * @param    string  $input  A hexadecimal (Base16) input to convert to Base58
