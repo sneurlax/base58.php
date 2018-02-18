@@ -16,6 +16,26 @@ class base58 {
 
   /**
    *
+   * Convert a hexadecimal string to a binary array
+   *
+   * @param    string  $hex  A hexadecimal string to convert to a binary array
+   * @return   array
+   *
+   */
+  public function hex_to_bin($hex) {
+    // TODO input validation
+
+    $res = array_fill(0, strlen($hex) / 2, 0);
+    for ($i = 0; $i < strlen($hex) / 2; $i++) {
+      // res[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+      // [int(hex[i*2:i*2+2], 16) for i in range(len(hex)//2)]
+      $res[$i] = intval(substr($hex, $i * 2, $i * 2 + 2 - $i * 2), 16);
+    }
+    return $res;
+  }
+
+  /**
+   *
    * Encode a hexadecimal (Base16) input to Base58
    *
    * @param    string  $input  A hexadecimal (Base16) input to convert to Base58
