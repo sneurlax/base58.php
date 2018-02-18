@@ -86,6 +86,43 @@ class base58 {
     return join($res);
   }
 
+  /**
+   *
+   * Convert a UInt8BE (one unsigned big endian byte) array to UInt64
+   *
+   * @param    array   $data  A UInt8BE array to convert to UInt64
+   * @return   number
+   *
+   */
+  public function uint8_be_to_64($data) {
+    // TODO input validation
+
+    $res = 0;
+    $switch = 9 - count($data);
+    for ($i = 0; $i < count($data); $i++) {
+      if ($switch == 1) {
+        $res = $res << 8 | $data[$i];
+      } elseif ($switch == 2) {
+        $res = $res << 8 | $data[$i];
+      } elseif ($switch == 3) {
+        $res = $res << 8 | $data[$i];
+      } elseif ($switch == 4) {
+        $res = $res << 8 | $data[$i];
+      } elseif ($switch == 5) {
+        $res = $res << 8 | $data[$i];
+      } elseif ($switch == 6) {
+        $res = $res << 8 | $data[$i];
+      } elseif ($switch == 7) {
+        $res = $res << 8 | $data[$i];
+      } elseif ($switch == 8) {
+        $res = $res << 8 | $data[$i];
+      } else {
+        throw new Exception('Impossible condition');
+      }
+    }
+    return $res;
+  }
+
    * Encode a hexadecimal (Base16) input to Base58
    *
    * @param    string  $input  A hexadecimal (Base16) input to convert to Base58
