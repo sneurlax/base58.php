@@ -27,8 +27,6 @@ class base58 {
 
     $res = array_fill(0, strlen($hex) / 2, 0);
     for ($i = 0; $i < strlen($hex) / 2; $i++) {
-      // res[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
-      // [int(hex[i*2:i*2+2], 16) for i in range(len(hex)//2)]
       $res[$i] = intval(substr($hex, $i * 2, $i * 2 + 2 - $i * 2), 16);
     }
     return $res;
