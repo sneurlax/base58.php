@@ -34,6 +34,22 @@ class base58 {
 
   /**
    *
+   * Convert a binary array to a hexadecimal string
+   *
+   * @param    array   $bin  A binary array to convert to a hexadecimal string
+   * @return   string
+   *
+   */
+  public function bin_to_hex($bin) {
+    // TODO input validation
+
+    $res = [];
+    for ($i = 0; $i < count($bin); $i++) {
+      array_push($res, base_convert($bin[$i], 10, 16));
+    }
+    return join($res);
+  }
+
    * Encode a hexadecimal (Base16) input to Base58
    *
    * @param    string  $input  A hexadecimal (Base16) input to convert to Base58
