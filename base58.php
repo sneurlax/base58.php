@@ -13,6 +13,9 @@ class base58 {
    * @var string
    */
   static $alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  static $encoded_block_sizes = [0, 2, 3, 5, 6, 7, 9, 10, 11];
+  static $full_block_size = 8;
+  static $full_encoded_block_size = 11;
 
   /**
    *
@@ -144,14 +147,72 @@ class base58 {
     return $res;
   }
 
-   * Encode a hexadecimal (Base16) input to Base58
+  /**
    *
-   * @param    string  $input  A hexadecimal (Base16) input to convert to Base58
+   * Convert a hexadecimal (Base16) array to a Base58 string
+   *
+   * @param    array    $data   A Uint8BE array to convert to UInt8BE
+   * @param    array    $buf    Size of array to return
+   * @param    integer  $index  Size of array to return
    * @return   string
    *
    */
-  public function encode($input) {
-    // stub
+  public function encode_block($data, $buf, $index) {
+    // TODO input validation
+
+    $num = self::uint8_be_to_64($data);
+    $i = self::$encoded_block_sizes[count($data)] - 1;
+    while ($num > 0) {
+      $remainder = $num % 58;
+      $num = floor($num / 58);
+      $buf[$index + $i] = self::$alphabet[$remainder];
+      $i--;
+    }
+    return $buf;
+  }
+
+  /**
+   *
+   * Encode a hexadecimal (Base16) input to Base58
+   *
+   * @param    string  $hex  A hexadecimal (Base16) string to convert to Base58
+   * @return   string
+   *
+   */
+  public function encode($hex) {
+    // TODO input validation
+
+    $data = self::hex_to_bin($hex);
+
+    if (count($data) == 0) {
+      return '';
+    }
+
+    $full_block_count = floor(count($data) / self::$full_block_size);
+    $last_block_size = count($data) % self::$full_block_size;
+    $res_size = $full_block_count * self::$full_encoded_block_size + self::$encoded_block_sizes[$last_block_size];
+
+    $res = array_fill(0, $res_size, 0);
+    for ($i = 0; $i < $res_size; $i++) {
+      $res[$i] = self::$alphabet[0];
+    }
+
+    for ($i = 0; $i < $full_block_count; $i++) {
+      // res = b58.encode_block(data.subarray(i * full_block_size, i * full_block_size + full_block_size), res, i * full_encoded_block_size);
+      // res = encode_block(data[(i*__fullBlockSize):(i*__fullBlockSize+__fullBlockSize)], res, i * __fullEncodedBlockSize)
+      $res = self::encode_block(array_slice($data, $i * self::$full_block_size, $i * self::$full_block_size + self::$full_block_size), $res, $i * self::$full_encoded_block_size);
+    }
+
+    if ($last_block_size > 0) {
+      // res = b58.encode_block(data.subarray(full_block_count * full_block_size, full_block_count * full_block_size + last_block_size), res, full_block_count * full_encoded_block_size)
+      // res = encode_block(data[(full_block_count*__fullBlockSize):(full_block_count*__fullBlockSize+last_block_size)], res, full_block_count * __fullEncodedBlockSize)
+      $res = self::encode_block(array_slice($data, $full_block_count * self::$full_block_size, self::$full_block_count * self::$full_block_size + $last_block_size - $full_block_count * self::$full_block_size), $res, self::$full_block_count * self::$full_encoded_block_size);
+    }
+
+    // print_r($res);
+    // print self::bin_to_str($res);
+
+    return self::bin_to_str($res);
   }
 
   /**
@@ -163,7 +224,11 @@ class base58 {
    *
    */
   public function decode($input) {
-    // stub
+    // TODO input validation
+
+    $res = '';
+
+    return $res;
   }
 }
 
