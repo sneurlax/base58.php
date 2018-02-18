@@ -100,24 +100,25 @@ class base58 {
     $res = 0;
     $switch = 9 - count($data);
     for ($i = 0; $i < count($data); $i++) {
-      if ($switch == 1) {
-        $res = $res << 8 | $data[$i];
-      } elseif ($switch == 2) {
-        $res = $res << 8 | $data[$i];
-      } elseif ($switch == 3) {
-        $res = $res << 8 | $data[$i];
-      } elseif ($switch == 4) {
-        $res = $res << 8 | $data[$i];
-      } elseif ($switch == 5) {
-        $res = $res << 8 | $data[$i];
-      } elseif ($switch == 6) {
-        $res = $res << 8 | $data[$i];
-      } elseif ($switch == 7) {
-        $res = $res << 8 | $data[$i];
-      } elseif ($switch == 8) {
-        $res = $res << 8 | $data[$i];
-      } else {
-        throw new Exception('Impossible condition');
+      switch($switch){
+        case 1: 
+          $res = $res << 8 | $data[$i];
+        case 2:
+          $res = $res << 8 | $data[$i];
+        case 3:
+          $res = $res << 8 | $data[$i];
+        case 4:
+          $res = $res << 8 | $data[$i];
+        case 5:
+          $res = $res << 8 | $data[$i];
+        case 6:
+          $res = $res << 8 | $data[$i];
+        case 7:
+          $res = $res << 8 | $data[$i];
+        case 8:
+          $res = $res << 8 | $data[$i];
+        default:
+          throw new Exception('Impossible condition');
       }
     }
     return $res;
