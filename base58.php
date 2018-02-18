@@ -68,6 +68,24 @@ class base58 {
     return $res;
   }
 
+  /**
+   *
+   * Convert a binary array to a string
+   *
+   * @param    array   $bin  A binary array to convert to a string
+   * @return   string
+   *
+   */
+  function bin_to_str($bin) {
+    // TODO input validation
+
+    $res = array_fill(0, count($bin), 0);
+    for ($i = 0; $i < count($bin); $i++) {
+      $res[$i] = chr($bin[$i]);
+    }
+    return join($res);
+  }
+
    * Encode a hexadecimal (Base16) input to Base58
    *
    * @param    string  $input  A hexadecimal (Base16) input to convert to Base58
