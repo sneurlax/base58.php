@@ -2,6 +2,11 @@
 
 class base58 {
   /**
+   * @var string
+   */
+  private $alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+
+  /**
    *
    * Encode a hexadecimal (Base16) input to Base58
    *
