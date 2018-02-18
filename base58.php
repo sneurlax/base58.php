@@ -100,7 +100,7 @@ class base58 {
     $res = 0;
     $switch = 9 - count($data);
     for ($i = 0; $i < count($data); $i++) {
-      switch($switch){
+      switch ($switch) {
         case 1: 
           $res = $res << 8 | $data[$i];
         case 2:
