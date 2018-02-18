@@ -44,4 +44,7 @@ echo "bin_to_str(): {$bin_to_str}<br>";
 $uint8_be_to_64 = ($base58->uint8_be_to_64([1, 35, 69, 103, 137, 171, 205, 239]) === 81985529216486895 ? 'pass' : 'fail');
 echo "uint8_be_to_64(): {$uint8_be_to_64}<br>";
 
+$uint64_to_8_be = ($base58->uint64_to_8_be(81985529216486895, 8) === [1, 35, 69, 103, 137, 171, 205, 239] ? 'pass' : 'fail');
+echo "uint64_to_8_be(): {$uint64_to_8_be}<br>";
+
 ?>
