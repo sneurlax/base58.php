@@ -61,7 +61,7 @@ class base58 {
    * @return   array
    *
    */
-  function str_to_bin($str) {
+  public function str_to_bin($str) {
     // TODO input validation
 
     $res = array_fill(0, strlen($str), 0);
@@ -79,7 +79,7 @@ class base58 {
    * @return   string
    *
    */
-  function bin_to_str($bin) {
+  public function bin_to_str($bin) {
     // TODO input validation
 
     $res = array_fill(0, count($bin), 0);
