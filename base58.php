@@ -198,14 +198,10 @@ class base58 {
     }
 
     for ($i = 0; $i < $full_block_count; $i++) {
-      // res = b58.encode_block(data.subarray(i * full_block_size, i * full_block_size + full_block_size), res, i * full_encoded_block_size);
-      // res = encode_block(data[(i*__fullBlockSize):(i*__fullBlockSize+__fullBlockSize)], res, i * __fullEncodedBlockSize)
       $res = self::encode_block(array_slice($data, $i * self::$full_block_size, ($i * self::$full_block_size + self::$full_block_size) - ($i * self::$full_block_size)), $res, $i * self::$full_encoded_block_size);
     }
 
     if ($last_block_size > 0) {
-      // res = b58.encode_block(data.subarray(full_block_count * full_block_size, full_block_count * full_block_size + last_block_size), res, full_block_count * full_encoded_block_size)
-      // res = encode_block(data[(full_block_count*__fullBlockSize):(full_block_count*__fullBlockSize+last_block_size)], res, full_block_count * __fullEncodedBlockSize)
       $res = self::encode_block(array_slice($data, $full_block_count * self::$full_block_size, self::$full_block_count * self::$full_block_size + $last_block_size), $res, self::$full_block_count * self::$full_encoded_block_size);
     }
 
