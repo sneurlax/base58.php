@@ -151,10 +151,10 @@ class base58 {
    *
    * Convert a hexadecimal (Base16) array to a Base58 string
    *
-   * @param    array    $data   A Uint8BE array to convert to UInt8BE
-   * @param    array    $buf    Size of array to return
-   * @param    integer  $index  Size of array to return
-   * @return   string
+   * @param    array    $data
+   * @param    array    $buf
+   * @param    integer  $index 
+   * @return   array
    *
    */
   public function encode_block($data, $buf, $index) {
