@@ -4,13 +4,13 @@ include('base58.php');
 
 $base58 = new Base58;
 
-$input = (isset($_REQUEST['input']) ? $_REQUEST['input'] : 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262');
+$input = (isset($_REQUEST['input']) ? $_REQUEST['input'] : '129f5a5c1545dc3a1db567154121878f08f8572cdf45e5549c624fb3f01fbd274690716e09edf5658cb0c2be87e067149ff6ccdbe6a909eeb65db22a8e6d2eb5ce3f8c3d80');
 
 $encoded = $base58->encode($input);
 $decoded = $base58->decode($encoded);
 
-if ($input == 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262') { // Should encode to 'g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K'
-  $encoded .= ($encoded == 'g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K' ? ' (pass)' : ' (fail)');
+if ($input == '129f5a5c1545dc3a1db567154121878f08f8572cdf45e5549c624fb3f01fbd274690716e09edf5658cb0c2be87e067149ff6ccdbe6a909eeb65db22a8e6d2eb5ce3f8c3d80') { // Should encode to '47fMeiDeVkd5yDDiDZY4RU2W2Dh8GyAuyTA81xDwAnyUCoZZex6SEWgQXsgVrYvFk7TkrQSFcqBBKXWBMwi3sDzCQGciKFM'
+  $encoded .= ($encoded == '47fMeiDeVkd5yDDiDZY4RU2W2Dh8GyAuyTA81xDwAnyUCoZZex6SEWgQXsgVrYvFk7TkrQSFcqBBKXWBMwi3sDzCQGciKFM' ? ' (pass)' : ' (fail)');
   $decoded .= ($decoded == strtolower($input) ? ' (pass)' : ' (fail)');
 }
 
@@ -50,13 +50,13 @@ echo "uint64_to_8_be(): {$uint64_to_8_be}<br>";
 $encode_block = ($base58->encode_block([251, 106, 87, 120, 99, 51, 137, 244], [49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49], 11) == [49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 106, 52, 51, 90, 122, 68, 71, 121, 70, 82, 86, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49] ? 'pass' : 'fail');
 echo "encode_block(): {$encode_block}<br>";
 
-$encode = ($base58->encode('E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262') === 'g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K' ? 'pass' : 'fail');
+$encode = ($base58->encode('129f5a5c1545dc3a1db567154121878f08f8572cdf45e5549c624fb3f01fbd274690716e09edf5658cb0c2be87e067149ff6ccdbe6a909eeb65db22a8e6d2eb5ce3f8c3d80') === '47fMeiDeVkd5yDDiDZY4RU2W2Dh8GyAuyTA81xDwAnyUCoZZex6SEWgQXsgVrYvFk7TkrQSFcqBBKXWBMwi3sDzCQGciKFM' ? 'pass' : 'fail');
 echo "encode(): {$encode}<br>";
 
 $decode_block = ($base58->decode_block([106, 52, 51, 90, 122, 68, 71, 121, 70, 82, 86], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 8) == [0, 0, 0, 0, 0, 0, 0, 0, 251, 106, 87, 120, 99, 51, 137, 244, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] ? 'pass' : 'fail');
 echo "decode_block(): {$decode_block}<br>";
 
-$decode = (strtolower($base58->decode('g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K')) === strtolower('E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262') ? 'pass' : 'fail');
+$decode = (strtolower($base58->decode('47fMeiDeVkd5yDDiDZY4RU2W2Dh8GyAuyTA81xDwAnyUCoZZex6SEWgQXsgVrYvFk7TkrQSFcqBBKXWBMwi3sDzCQGciKFM')) === strtolower('129f5a5c1545dc3a1db567154121878f08f8572cdf45e5549c624fb3f01fbd274690716e09edf5658cb0c2be87e067149ff6ccdbe6a909eeb65db22a8e6d2eb5ce3f8c3d80') ? 'pass' : 'fail');
 echo "decode(): {$decode}<br>";
 
 ?>
