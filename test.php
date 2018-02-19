@@ -4,13 +4,13 @@ include('base58.php');
 
 $base58 = new Base58;
 
-$input = (isset($_REQUEST['input']) ? $_REQUEST['input'] : '0123456789ABCDEF');
+$input = (isset($_REQUEST['input']) ? $_REQUEST['input'] : 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262');
 
 $encoded = $base58->encode($input);
 $decoded = $base58->decode($encoded);
 
-if ($input == '0123456789ABCDEF') { // Should encode to 'C3CPq7c8PY'
-  $encoded .= ($encoded == 'C3CPq7c8PY' ? ' (pass)' : ' (fail)');
+if ($input == 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262') { // Should encode to 'g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K'
+  $encoded .= ($encoded == 'g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K' ? ' (pass)' : ' (fail)');
   $decoded .= ($decoded == $input ? ' (pass)' : ' (fail)');
 }
 
@@ -41,10 +41,16 @@ echo "str_to_bin(): {$str_to_bin}<br>";
 $bin_to_str = ($base58->bin_to_str([69, 57, 56, 55, 51, 68, 55, 57, 67, 54, 68, 56, 55, 68, 67, 48, 70, 66, 54, 65, 53, 55, 55, 56, 54, 51, 51, 51, 56, 57, 70, 52, 52, 53, 51, 50, 49, 51, 51, 48, 51, 68, 65, 54, 49, 70, 50, 48, 66, 68, 54, 55, 70, 67, 50, 51, 51, 65, 65, 51, 51, 50, 54, 50]) === 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262' ? 'pass' : 'fail');
 echo "bin_to_str(): {$bin_to_str}<br>";
 
-$uint8_be_to_64 = ($base58->uint8_be_to_64([1, 35, 69, 103, 137, 171, 205, 239]) === 81985529216486895 ? 'pass' : 'fail');
+$uint8_be_to_64 = ($base58->uint8_be_to_64([251, 106, 87, 120, 99, 51, 137, 244]) === '18116388625623255540' ? 'pass' : 'fail');
 echo "uint8_be_to_64(): {$uint8_be_to_64}<br>";
 
-$uint64_to_8_be = ($base58->uint64_to_8_be(81985529216486895, 8) === [1, 35, 69, 103, 137, 171, 205, 239] ? 'pass' : 'fail');
+$uint64_to_8_be = ($base58->uint64_to_8_be('18116388625623255540', 8) == [251, 106, 87, 120, 99, 51, 137, 244] ? 'pass' : 'fail');
 echo "uint64_to_8_be(): {$uint64_to_8_be}<br>";
+
+$encode_block = ($base58->encode_block([251, 106, 87, 120, 99, 51, 137, 244], [49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49], 11) == [49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 106, 52, 51, 90, 122, 68, 71, 121, 70, 82, 86, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49] ? 'pass' : 'fail');
+echo "encode_block(): {$encode_block}<br>";
+
+$encode = ($base58->encode('E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262') === 'g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K' ? 'pass' : 'fail');
+echo "encode(): {$encode}<br>";
 
 ?>
