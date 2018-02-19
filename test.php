@@ -56,4 +56,7 @@ echo "encode(): {$encode}<br>";
 $decode_block = ($base58->decode_block([106, 52, 51, 90, 122, 68, 71, 121, 70, 82, 86], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 8) == [0, 0, 0, 0, 0, 0, 0, 0, 251, 106, 87, 120, 99, 51, 137, 244, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] ? 'pass' : 'fail');
 echo "decode_block(): {$decode_block}<br>";
 
+$decode = (strtolower($base58->decode('g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K')) === strtolower('E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262') ? 'pass' : 'fail');
+echo "decode(): {$decode}<br>";
+
 ?>
