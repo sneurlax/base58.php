@@ -246,18 +246,52 @@ class base58 {
 
   /**
    *
-   * Decode a Base58 input to hexadecimal (Base16)
+   * Decode a Base58 string to hexadecimal (Base16)
    *
-   * @param    string  $input  A Base58 input to convert to hexadecimal (Base16)
+   * @param    string  $hex  A Base58 string to convert to hexadecimal (Base16)
    * @return   string
    *
    */
-  public function decode($input) {
+  public function decode($enc) {
     // TODO input validation
 
-    $res = '';
+    $enc = self::str_to_bin($enc);
+    if (count($enc) == 0) {
+      return '';
+    }
+    $full_block_count = floor(bcdiv(count($enc), self::$full_encoded_block_size));
+    $last_block_size = bcmod(count($enc), self::$full_encoded_block_size);
+    $last_block_decoded_size = self::index_of(self::$encoded_block_sizes, $last_block_size);
+    // TODO throw arrow if $last_block_decoded_size < 0
 
-    return $res;
+    $data_size = $full_block_count * self::$full_block_size + $last_block_decoded_size;
+
+    $data = array_fill(0, $data_size, 0);
+    for ($i = 0; $i <= $full_block_count; $i++) {
+      $data = self::decode_block(array_slice($enc, $i * self::$full_encoded_block_size, ($i * self::$full_encoded_block_size + self::$full_encoded_block_size) - ($i * self::$full_encoded_block_size)), $data, $i * self::$full_block_size);
+    }
+
+    if ($last_block_size > 0) {
+      $data = decode_block(array_slice($enc, $full_block_count * self::$full_encoded_block_size, self::$full_block_count * self::$full_encoded_block_size + $last_block_size), $data, self::$full_block_count * self::$full_block_size);
+    }
+
+    return self::bin_to_hex($data);
+    // return $data;
+  }
+
+  /**
+   *
+   * Search an array for a value
+   * Source: https://stackoverflow.com/a/30994678
+   *
+   * @param    array   $haystack  An array to search
+   * @param    string  $needle    A string to search for
+   * @return   number             The index of the element found (or -1 for no match)
+   *
+   */
+  private function index_of($array, $needle) {
+    foreach ($array as $key => $value) if ($value === $needle) return $key;
+    return -1;
   }
 }
 
