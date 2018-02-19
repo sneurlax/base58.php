@@ -173,7 +173,7 @@ class base58 {
 
   /**
    *
-   * Encode a hexadecimal (Base16) input to Base58
+   * Encode a hexadecimal (Base16) string to Base58
    *
    * @param    string  $hex  A hexadecimal (Base16) string to convert to Base58
    * @return   string
