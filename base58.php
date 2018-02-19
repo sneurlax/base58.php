@@ -207,6 +207,42 @@ class base58 {
 
     return self::bin_to_str($res);
   }
+  
+  /**
+   *
+   * Convert a Base58 input to hexadecimal (Base16)
+   *
+   * @param    array    $data
+   * @param    array    $buf
+   * @param    integer  $index
+   * @return   array
+   *
+   */
+  public function decode_block($data, $buf, $index) {
+    // TODO input validation
+
+    $res_size = self::index_of(self::$encoded_block_sizes, count($data));
+    // TODO throw error is $res_size <= 0
+
+    $res_num = 0;
+    $order = 1;
+    for ($i = count($data) - 1; $i >= 0; $i--) {
+      $digit = strpos(self::$alphabet, chr($data[$i]));
+      // TODO throw error if $digit < 0
+
+      $product = bcadd(bcmul($order, $digit), $res_num);
+      // TODO throw error if $product > bcpow(2, 64)
+
+      $res_num = $product;
+      $order = bcmul($order, 58);
+    }
+    // TODO throw error $res_size < self::$full_block_size && bcpow(2, 8 * $res_size) <= 0
+    $tmp_buf = self::uint64_to_8_be($res_num, $res_size);
+    for ($i = 0; $i < count($tmp_buf); $i++) {
+      $buf[$i + $index] = $tmp_buf[$i];
+    }
+    return $buf;
+  }
 
   /**
    *
