@@ -272,7 +272,7 @@ class base58 {
     }
 
     if ($last_block_size > 0) {
-      $data = decode_block(array_slice($enc, $full_block_count * self::$full_encoded_block_size, $full_block_count * self::$full_encoded_block_size + $last_block_size), $data, $full_block_count * self::$full_block_size);
+      $data = self::decode_block(array_slice($enc, $full_block_count * self::$full_encoded_block_size, $full_block_count * self::$full_encoded_block_size + $last_block_size), $data, $full_block_count * self::$full_block_size);
     }
 
     return self::bin_to_hex($data);
