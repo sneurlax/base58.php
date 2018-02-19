@@ -48,7 +48,7 @@ class base58 {
 
     $res = [];
     for ($i = 0; $i < count($bin); $i++) {
-      array_push($res, base_convert($bin[$i], 10, 16));
+      $res[] = dechex($bin[$i]);
     }
     return join($res);
   }
