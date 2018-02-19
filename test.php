@@ -11,7 +11,7 @@ $decoded = $base58->decode($encoded);
 
 if ($input == 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262') { // Should encode to 'g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K'
   $encoded .= ($encoded == 'g4Wyj92J6uDj43ZzDGyFRVCaHUYRTj1WXYgUggXVNR5K' ? ' (pass)' : ' (fail)');
-  $decoded .= ($decoded == $input ? ' (pass)' : ' (fail)');
+  $decoded .= ($decoded == strtolower($input) ? ' (pass)' : ' (fail)');
 }
 
 echo "<body style='font-family: monospace;'><table>
