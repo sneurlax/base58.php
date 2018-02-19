@@ -237,6 +237,7 @@ class base58 {
       $order = bcmul($order, 58);
     }
     // TODO throw error $res_size < self::$full_block_size && bcpow(2, 8 * $res_size) <= 0
+    
     $tmp_buf = self::uint64_to_8_be($res_num, $res_size);
     for ($i = 0; $i < count($tmp_buf); $i++) {
       $buf[$i + $index] = $tmp_buf[$i];
