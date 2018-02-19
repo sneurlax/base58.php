@@ -9,8 +9,8 @@ $input = (isset($_REQUEST['input']) ? $_REQUEST['input'] : '0123456789ABCDEF');
 $encoded = $base58->encode($input);
 $decoded = $base58->decode($encoded);
 
-if ($input == '0123456789ABCDEF') { // Should encode to 'C3CPq7c8PY'
-  $encoded .= ($encoded == 'C3CPq7c8PY' ? ' (pass)' : ' (fail)');
+if ($input == '0123456789ABCDEF') { // Should encode to '1C3CPq7c8PY'
+  $encoded .= ($encoded == '1C3CPq7c8PY' ? ' (pass)' : ' (fail)');
   $decoded .= ($decoded == $input ? ' (pass)' : ' (fail)');
 }
 
@@ -46,5 +46,10 @@ echo "uint8_be_to_64(): {$uint8_be_to_64}<br>";
 
 $uint64_to_8_be = ($base58->uint64_to_8_be(81985529216486895, 8) === [1, 35, 69, 103, 137, 171, 205, 239] ? 'pass' : 'fail');
 echo "uint64_to_8_be(): {$uint64_to_8_be}<br>";
+
+$encode_block = ($base58->encode_block([1, 35, 69, 103, 137, 171, 205, 239], [49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49], 110) === [49, 67, 51, 67, 80, 113, 55, 99, 56, 80, 89] ? 'pass' : 'fail');
+echo "encode_block(): {$encode_block}<br>";
+
+print_r($base58->encode_block([1, 35, 69, 103, 137, 171, 205, 239], [49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49], 110));
 
 ?>

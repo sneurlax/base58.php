@@ -1,2 +1,2 @@
 # base58.php
-Base58 PHP codec
+PHP codec for Base58 encoding and decoding 
