@@ -48,7 +48,7 @@ class base58 {
 
     $res = [];
     for ($i = 0; $i < count($bin); $i++) {
-      $res[] = dechex($bin[$i]);
+      $res[] = substr('0'.dechex($bin[$i]), -2);
     }
     return join($res);
   }
