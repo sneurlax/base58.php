@@ -26,7 +26,12 @@ class base58 {
    *
    */
   public function hex_to_bin($hex) {
-    // TODO input validation
+    if (gettype($hex) != 'string') {
+      throw new Exception('base58->hex_to_bin(): Invalid input type (must be a string)');
+    }
+    if (strlen($hex) % 2 != 0) {
+      throw new Exception('base58->hex_to_bin(): Invalid input length (must be even)');
+    }
 
     $res = array_fill(0, strlen($hex) / 2, 0);
     for ($i = 0; $i < strlen($hex) / 2; $i++) {
@@ -44,7 +49,9 @@ class base58 {
    *
    */
   public function bin_to_hex($bin) {
-    // TODO input validation
+    if (gettype($bin) != 'array') {
+      throw new Exception('base58->bin_to_hex(): Invalid input type (must be an array)');
+    }
 
     $res = [];
     for ($i = 0; $i < count($bin); $i++) {
@@ -62,7 +69,9 @@ class base58 {
    *
    */
   public function str_to_bin($str) {
-    // TODO input validation
+    if (gettype($str) != 'string') {
+      throw new Exception('base58->str_to_bin(): Invalid input type (must be a string)');
+    }
 
     $res = array_fill(0, strlen($str), 0);
     for ($i = 0; $i < strlen($str); $i++) {
@@ -80,7 +89,9 @@ class base58 {
    *
    */
   public function bin_to_str($bin) {
-    // TODO input validation
+    if (gettype($bin) != 'array') {
+      throw new Exception('base58->bin_to_str(): Invalid input type (must be an array)');
+    }
 
     $res = array_fill(0, count($bin), 0);
     for ($i = 0; $i < count($bin); $i++) {
@@ -98,7 +109,9 @@ class base58 {
    *
    */
   public function uint8_be_to_64($data) {
-    // TODO input validation
+    if (gettype($data) != 'array') {
+      throw new Exception ('base58->uint8_be_to_64(): Invalid input type (must be an array)');
+    }
 
     $res = 0;
     $i = 0;
@@ -121,7 +134,7 @@ class base58 {
         $res = bcadd(bcmul($res, bcpow(2, 8)), $data[$i++]);
         break;
       default:
-        throw new Exception('Impossible condition');
+        throw new Exception('base58->uint8_be_to_64: Invalid input length (1 <= count($data) <= 8)');
       }
     return $res;
   }
@@ -136,8 +149,15 @@ class base58 {
    *
    */
   public function uint64_to_8_be($num, $size) {
-    // TODO input validation
-    //      throw exception if size < 1 or size > 8
+    if (gettype($num) != ('integer' || 'double')) {
+      throw new Exception ('base58->uint64_to_8_be(): Invalid input type ($num must be a number)');
+    }
+    if (gettype($size) != 'integer') {
+      throw new Exception ('base58->uint64_to_8_be(): Invalid input type ($size must be an integer)');
+    }
+    if ($size < 1 || $size > 8) {
+      throw new Exception ('base58->uint64_to_8_be(): Invalid size (1 <= $size <= 8)');
+    }
 
     $res = array_fill(0, $size, 0);
     for ($i = $size - 1; $i >= 0; $i--) {
@@ -151,14 +171,25 @@ class base58 {
    *
    * Convert a hexadecimal (Base16) array to a Base58 string
    *
-   * @param    array    $data
-   * @param    array    $buf
-   * @param    integer  $index 
+   * @param    array   $data
+   * @param    array   $buf
+   * @param    number  $index 
    * @return   array
    *
    */
   public function encode_block($data, $buf, $index) {
-    // TODO input validation
+    if (gettype($data) != 'array') {
+      throw new Exception('base58->encode_block(): Invalid input type ($data must be an array)');
+    }
+    if (gettype($buf) != 'array') {
+      throw new Exception('base58->encode_block(): Invalid input type ($buf must be an array)');
+    }
+    if (gettype($index) != ('integer' || 'double')) {
+      throw new Exception('base58->encode_block(): Invalid input type ($index must be a number)');
+    }
+    if (count($data) < 1 or count($data) > self::$full_encoded_block_size) {
+      throw new Exception('base58->encode_block(): Invalid input length (1 <= count($data) <= 8)');
+    }
 
     $num = self::uint8_be_to_64($data);
     $i = self::$encoded_block_sizes[count($data)] - 1;
@@ -180,10 +211,11 @@ class base58 {
    *
    */
   public function encode($hex) {
-    // TODO input validation
+    if (gettype($hex) != 'string') {
+      throw new Exception ('base58->encode(): Invalid input type (must be a string)');
+    }
 
     $data = self::hex_to_bin($hex);
-
     if (count($data) == 0) {
       return '';
     }
@@ -219,24 +251,40 @@ class base58 {
    *
    */
   public function decode_block($data, $buf, $index) {
-    // TODO input validation
+    if (gettype($data) != 'array') {
+      throw new Exception('base58->decode_block(): Invalid input type ($data must be an array)');
+    }
+    if (gettype($buf) != 'array') {
+      throw new Exception('base58->decode_block(): Invalid input type ($buf must be an array)');
+    }
+    if (gettype($index) != ('integer' || 'double')) {
+      throw new Exception('base58->decode_block(): Invalid input type ($index must be a number)');
+    }
 
     $res_size = self::index_of(self::$encoded_block_sizes, count($data));
-    // TODO throw error is $res_size <= 0
+    if ($res_size <= 0) {
+      throw new Exception('base58->decode_block(): Invalid input length ($data must be a value from base58::$encoded_block_sizes)');
+    }
 
     $res_num = 0;
     $order = 1;
     for ($i = count($data) - 1; $i >= 0; $i--) {
       $digit = strpos(self::$alphabet, chr($data[$i]));
-      // TODO throw error if $digit < 0
+      if ($digit < 0) {
+        throw new Exception("base58->decode_block(): Invalid character ($digit \"{$digit}\" not found in base58::$alphabet)");
+      }
 
       $product = bcadd(bcmul($order, $digit), $res_num);
-      // TODO throw error if $product > bcpow(2, 64)
+      if ($product > bcpow(2, 64)) {
+        throw new Exception('base58->decode_block(): Integer overflow ($product exceeds the maximum 64bit integer)');
+      }
 
       $res_num = $product;
       $order = bcmul($order, 58);
     }
-    // TODO throw error $res_size < self::$full_block_size && bcpow(2, 8 * $res_size) <= 0
+    if ($res_size < self::$full_block_size && bcpow(2, 8 * $res_size) <= 0) {
+      throw new Exception('base58->decode_block(): Integer overflow (bcpow(2, 8 * $res_size) exceeds the maximum 64bit integer)');
+    }
     
     $tmp_buf = self::uint64_to_8_be($res_num, $res_size);
     for ($i = 0; $i < count($tmp_buf); $i++) {
@@ -254,7 +302,9 @@ class base58 {
    *
    */
   public function decode($enc) {
-    // TODO input validation
+    if (gettype($enc) != 'string') {
+      throw new Exception ('base58->decode(): Invalid input type (must be a string)');
+    }
 
     $enc = self::str_to_bin($enc);
     if (count($enc) == 0) {
@@ -263,7 +313,6 @@ class base58 {
     $full_block_count = floor(bcdiv(count($enc), self::$full_encoded_block_size));
     $last_block_size = bcmod(count($enc), self::$full_encoded_block_size);
     $last_block_decoded_size = self::index_of(self::$encoded_block_sizes, $last_block_size);
-    // TODO throw arrow if $last_block_decoded_size < 0
 
     $data_size = $full_block_count * self::$full_block_size + $last_block_decoded_size;
 
@@ -277,7 +326,6 @@ class base58 {
     }
 
     return self::bin_to_hex($data);
-    // return $data;
   }
 
   /**
@@ -290,8 +338,15 @@ class base58 {
    * @return   number             The index of the element found (or -1 for no match)
    *
    */
-  private function index_of($array, $needle) {
-    foreach ($array as $key => $value) if ($value === $needle) return $key;
+  private function index_of($haystack, $needle) {
+    if (gettype($haystack) != 'array') {
+      throw new Exception ('base58->decode(): Invalid input type ($haystack must be an array)');
+    }
+    // if (gettype($needle) != 'string') {
+    //   throw new Exception ('base58->decode(): Invalid input type ($needle must be a string)');
+    // }
+
+    foreach ($haystack as $key => $value) if ($value === $needle) return $key;
     return -1;
   }
 }
