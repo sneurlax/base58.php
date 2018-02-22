@@ -31,9 +31,6 @@
  */
 
 class base58 {
-  /**
-   * @var string
-   */
   static $alphabet = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
   static $encoded_block_sizes = [0, 2, 3, 5, 6, 7, 9, 10, 11];
   static $full_block_size = 8;
